@@ -8,9 +8,7 @@ import java.util.List;
 @RepositoryRestResource(collectionResourceRel="reservationhists", path="reservationhists")
 public interface ReservationhistRepository extends PagingAndSortingRepository<Reservationhist, Long> {
 
-    List<Reservationhist> findByCustomerId(Long customerId);
+    
 
-
-    void deleteByReservationId(Long reservationId);
-
+    
 }
