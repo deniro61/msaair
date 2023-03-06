@@ -37,7 +37,45 @@ public class ReservationhistViewHandler {
     }
 
 
+    @StreamListener(KafkaProcessor.INPUT)
+    public void whenMileageincreased_then_UPDATE_1(@Payload Mileageincreased mileageincreased) {
+        try {
+            if (!mileageincreased.validate()) return;
+                // view 객체 조회
 
+                List<Reservationhist> reservationhistList = reservationhistRepository.findByCustomerId(mileageincreased.getId());
+                for(Reservationhist reservationhist : reservationhistList){
+                    // view 객체에 이벤트의 eventDirectValue 를 set 함
+                    reservationhist.setMileage(mileageincreased.getMileage());
+                // view 레파지 토리에 save
+                reservationhistRepository.save(reservationhist);
+                }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    @StreamListener(KafkaProcessor.INPUT)
+    public void whenMileageDecreased_then_UPDATE_2(@Payload MileageDecreased mileageDecreased) {
+        try {
+            if (!mileageDecreased.validate()) return;
+                // view 객체 조회
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @StreamListener(KafkaProcessor.INPUT)
+    public void whenReservationCancelled_then_DELETE_1(@Payload ReservationCancelled reservationCancelled) {
+        try {
+            if (!reservationCancelled.validate()) return;
+            // view 레파지 토리에 삭제 쿼리
+            reservationhistRepository.deleteByReservationId(reservationCancelled.getId());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
 }
 
